@@ -1,0 +1,14 @@
+{
+    "name": "dima/collage",
+    "description": "simple collage app",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Dima-macbook",
+            "email": "dima@virtuman.com"
+        }
+    ],
+    "require": {
+        "intervention/image": "^2.4"
+    }
+}
