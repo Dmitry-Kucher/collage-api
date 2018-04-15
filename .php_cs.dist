@@ -1,0 +1,24 @@
+<?php
+
+$header = "LenPRO/Collage project";
+$finder = PhpCsFixer\Finder::create()
+    ->exclude('vendor')
+    ->in(__DIR__);
+
+$rules = [
+    '@PSR2' => true,
+    'header_comment' => ['header' => $header],
+    'array_syntax' => [
+        'syntax' => 'short',
+    ],
+    'braces' => [
+        'position_after_functions_and_oop_constructs' => 'same',
+    ],
+    'single_import_per_statement' => false,
+];
+
+$config = PhpCsFixer\Config::create()
+    ->setRules($rules)
+    ->setFinder($finder);
+
+return $config;

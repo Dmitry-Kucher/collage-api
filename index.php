@@ -1,9 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dima
- * Date: 15/04/2018
- * Time: 22:44
+
+/*
+ * LenPRO/Collage project
  */
 
 require 'vendor/autoload.php';
@@ -17,6 +15,8 @@ $manager = new ImageManager([
 ]);
 
 // to finally create image instances
-$image = $manager->make('https://greatartists.ru/contents/uploads/2018/04/fRLBai2Y07w.jpg')->resize(300, 200);
+$image = $manager
+    ->make('https://greatartists.ru/contents/uploads/2018/04/fRLBai2Y07w.jpg')
+    ->resize(300, 200);
 
 $image->save('./test.jpg');
