@@ -1,9 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dima
- * Date: 16/04/2018
- * Time: 23:02
+
+/*
+ * LenPRO/Collage project
  */
 
 namespace LenPRO\Collage;
