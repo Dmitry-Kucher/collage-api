@@ -2,14 +2,20 @@ version: '2'
 services:
   nginx:
     build: ./deployment/nginx
-    expose:
+    ports:
       - 8077:80
     links:
       - php-fpm:php-fpm
+    volumes:
+      - ./src:/var/www/project:rw
+    depends_on:
+      - php-fpm
     restart: always
 
   php-fpm:
     build: ./deployment/php-fpm
     expose:
       - 9000
+    volumes:
+          - ./src:/var/www/project:rw
     restart: always
