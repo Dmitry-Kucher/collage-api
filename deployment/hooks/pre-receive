@@ -1,0 +1,16 @@
+#!/bin/sh
+
+SERVER_DIFF=`git status --short | grep " * src/"`
+
+if ! [ -z "$SERVER_DIFF" ]
+then
+    echo "=========== Server hooks started ==========="
+    cd src && composer check-cs
+    CS_FIXER_EXIT_CODE=$?
+    if ! [ $CS_FIXER_EXIT_CODE -eq 0 ]
+    then
+        echo -e "=========== Check your style with \033[43m\033[34mcomposer show-cs-diff\033[0m ==========="
+    fi
+    echo "=========== Server hooks ended ==========="
+    exit $CS_FIXER_EXIT_CODE
+fi
