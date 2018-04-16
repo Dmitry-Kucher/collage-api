@@ -1,3 +1,3 @@
 #!/bin/sh
 
-cp ./deployment/hooks/pre-receive ./.git/hooks/
+cp ./deployment/hooks/pre-commit ./.git/hooks/
