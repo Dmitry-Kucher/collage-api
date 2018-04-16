@@ -3,7 +3,7 @@ services:
   nginx:
     build: ./deployment/nginx
     expose:
-      - 80
+      - 8077:80
     links:
       - php-fpm:php-fpm
     restart: always
