@@ -9,6 +9,14 @@ require 'vendor/autoload.php';
 // import the Intervention Image Manager Class
 use Intervention\Image\ImageManager;
 
+$container = include './config/container.php';
+
+$app = new \Slim\App($container);
+
+$app->run();
+
+
+
 // create an image manager instance with favored driver
 $manager = new ImageManager([
     'driver' => 'gd'
