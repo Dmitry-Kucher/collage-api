@@ -8,7 +8,7 @@ declare(strict_types=1);
 namespace LenPRO\Lib\Collage;
 
 use Interop\Container\ContainerInterface;
-use LenPRO\Lib\Base\BaseLib;
+use LenPRO\Lib\BaseLib;
 
 class CollageMaker extends BaseLib {
     private $config = [];

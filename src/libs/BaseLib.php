@@ -4,7 +4,7 @@
  * LenPRO/Collage project
  */
 
-namespace LenPRO\Lib\Base;
+namespace LenPRO\Lib;
 
 use Interop\Container\ContainerInterface;
 

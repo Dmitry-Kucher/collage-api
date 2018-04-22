@@ -6,12 +6,9 @@
 
 require './vendor/autoload.php';
 
-$container = include './requirements/container.php';
-$container['callableResolver'] = function ($container) {
-    return new \Bnf\Slim3Psr15\CallableResolver($container);
-};
+$config = include './requirements/config.php';
 
-$app = new \Slim\App($container);
+$app = new \Slim\App($config);
 
 $trailingSlashMiddleware = new Middlewares\TrailingSlash(true);
 $trailingSlashMiddleware->redirect(true);
