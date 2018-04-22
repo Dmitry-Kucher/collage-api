@@ -15,11 +15,4 @@ $container['imageManager'] = function ($container) {
     return $manager;
 };
 
-$container['settings'] = function ($container) {
-    $config = [
-        'displayErrorDetails' => true,
-    ];
-    return $config;
-};
-
 return $container;

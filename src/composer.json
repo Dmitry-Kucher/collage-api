@@ -10,7 +10,9 @@
     "require": {
         "intervention/image": "^2.4",
         "slim/slim": "^3.0",
-        "friendsofphp/php-cs-fixer": "^2.11"
+        "friendsofphp/php-cs-fixer": "^2.11",
+        "bnf/slim3-psr15": "^1.0",
+        "middlewares/trailing-slash": "^1.0"
     },
     "scripts": {
         "show-cs-diff": "php-cs-fixer fix -v --diff --diff-format=udiff --show-progress=estimating --dry-run --ansi",

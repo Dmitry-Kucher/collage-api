@@ -9,6 +9,6 @@ use LenPRO\Lib\Collage\CollageMaker;
 $container = $app->getContainer();
 
 $container['collageMaker'] = function ($container) {
-    $collageMaker = new CollageMaker();
+    $collageMaker = new CollageMaker($container);
     return $collageMaker;
 };
