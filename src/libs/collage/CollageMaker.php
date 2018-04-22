@@ -5,13 +5,17 @@ declare(strict_types=1);
  * LenPRO/Collage project
  */
 
-namespace LenPRO\Collage;
+namespace LenPRO\Lib\Collage;
 
-class CollageMaker {
+use Interop\Container\ContainerInterface;
+use LenPRO\Lib\Base\BaseLib;
+
+class CollageMaker extends BaseLib {
     private $config = [];
 
-    public function __construct(array $config) {
+    public function __construct(array $config = [], ContainerInterface $container) {
         $this->setup($config);
+        parent::__construct($container);
     }
 
     private function setup(array $config): void {
@@ -29,7 +33,15 @@ class CollageMaker {
         if (4 != count($images)) {
             throw new \Exception("unsupported count of images");
         }
+
         foreach ($images as $image) {
+            $image = $this
+                ->container
+                ->get('imageManager')
+                ->make($image)
+                ->resize(300, 200);
+
+            $image->save('./test.jpg');
         }
         $this->config['images'] = $images;
         return $this;
