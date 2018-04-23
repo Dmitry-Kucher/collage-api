@@ -26,7 +26,6 @@ $app->group(
             return $newResponse;
         });
 
-        $this->post('/create/', function (Request $request, Response $response) {
-        });
+        $this->post('/create/', \LenPRO\Controllers\CollageController::class . ':createAction');
     }
 );
