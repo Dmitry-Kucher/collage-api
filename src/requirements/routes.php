@@ -6,7 +6,7 @@
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use LenPRO\Lib\http\StatusCodes;
+use LenPRO\Lib\http\StatusCode;
 
 $app->get('/health/', function (Request $request, Response $response) {
     $arr = [
@@ -21,7 +21,7 @@ $app->group(
     function () {
         $this->get('/create/', function (Request $request, Response $response) {
             $newResponse = $response
-                ->withStatus(StatusCodes::HTTP_METHOD_NOT_ALLOWED)
+                ->withStatus(StatusCode::HTTP_METHOD_NOT_ALLOWED)
                 ->withHeader('Allow', 'POST');
             return $newResponse;
         });

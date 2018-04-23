@@ -6,7 +6,7 @@
 
 namespace LenPRO\Lib\HTTP;
 
-class StatusCodes {
+class StatusCode {
     // [Informational 1xx]
     const HTTP_CONTINUE = 100;
     const HTTP_SWITCHING_PROTOCOLS = 101;
