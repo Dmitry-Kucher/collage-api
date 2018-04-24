@@ -11,7 +11,12 @@ use Interop\Container\ContainerInterface;
 use LenPRO\Lib\BaseLib;
 
 class CollageMaker extends BaseLib {
-    private $config = [];
+    private $config = [
+        'collage' => [
+            'width' => 860,
+            'height' => 860,
+        ]
+    ];
     private $imageManager;
 
     public function __construct(ContainerInterface $container, array $config = []) {
@@ -36,25 +41,27 @@ class CollageMaker extends BaseLib {
             throw new \Exception("unsupported count of images");
         }
 
-        $resultImages = [];
-        foreach ($images as $image) {
-            $resultImages[] = $this->imageManager
-                ->make($image)
-                ->resize(300, 200);
-        }
         $this->config['images'] = $images;
-
-        $canvas = $this->imageManager->canvas(600, 400);
-        $canvas->insert($resultImages[0], 'top-left', 0, 0);
-        $canvas->insert($resultImages[1], 'top-left', 300, 0);
-        $canvas->insert($resultImages[2], 'top-left', 0, 200);
-        $canvas->insert($resultImages[3], 'top-left', 300, 200);
-        $canvas->save('./test.jpg');
         return $this;
     }
 
     public function makeCollage() {
         $collageConfig = $this->config['collage'];
         $images = $this->config['images'];
+
+        $resultImages = [];
+        foreach ($images as $image) {
+            $resultImages[] = $this->imageManager
+                ->make($image)
+                ->fit(400, 400, function ($constraint) {
+//                    $constraint->upsize();
+                });
+        }
+        $canvas = $this->imageManager->canvas($collageConfig['width'], $collageConfig['height']);
+        $canvas->insert($resultImages[0], 'top-left', 20, 20);
+        $canvas->insert($resultImages[1], 'top-left', 440, 20);
+        $canvas->insert($resultImages[2], 'top-left', 20, 440);
+        $canvas->insert($resultImages[3], 'top-left', 440, 440);
+        $canvas->save('./test.jpg');
     }
 }

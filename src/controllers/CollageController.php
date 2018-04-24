@@ -20,6 +20,8 @@ class CollageController extends BaseController {
     public function createAction(Request $request, Response $response) {
         $postParams = $request->getParsedBody();
 
-        $this->collageMaker->setImages($postParams['images']);
+        $this->collageMaker
+            ->setImages($postParams['images'])
+            ->makeCollage();
     }
 }
