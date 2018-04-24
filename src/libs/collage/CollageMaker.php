@@ -12,9 +12,11 @@ use LenPRO\Lib\BaseLib;
 
 class CollageMaker extends BaseLib {
     private $config = [];
+    private $imageManager;
 
-    public function __construct(array $config = [], ContainerInterface $container) {
+    public function __construct(ContainerInterface $container, array $config = []) {
         $this->setup($config);
+        $this->imageManager = $container->get('imageManager');
         parent::__construct($container);
     }
 
@@ -34,16 +36,20 @@ class CollageMaker extends BaseLib {
             throw new \Exception("unsupported count of images");
         }
 
+        $resultImages = [];
         foreach ($images as $image) {
-            $image = $this
-                ->container
-                ->get('imageManager')
+            $resultImages[] = $this->imageManager
                 ->make($image)
                 ->resize(300, 200);
-
-            $image->save('./test.jpg');
         }
         $this->config['images'] = $images;
+
+        $canvas = $this->imageManager->canvas(600, 400);
+        $canvas->insert($resultImages[0], 'top-left', 0, 0);
+        $canvas->insert($resultImages[1], 'top-left', 300, 0);
+        $canvas->insert($resultImages[2], 'top-left', 0, 200);
+        $canvas->insert($resultImages[3], 'top-left', 300, 200);
+        $canvas->save('./test.jpg');
         return $this;
     }
 
