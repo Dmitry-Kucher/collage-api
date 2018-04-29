@@ -63,5 +63,7 @@ class CollageMaker extends BaseLib {
         $canvas->insert($resultImages[2], 'top-left', 20, 440);
         $canvas->insert($resultImages[3], 'top-left', 440, 440);
         $canvas->save('./test.jpg');
+
+        return $canvas;
     }
 }
