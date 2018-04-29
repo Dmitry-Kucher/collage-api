@@ -27,5 +27,6 @@ $app->group(
         });
 
         $this->post('/create/', \LenPRO\Controllers\CollageController::class . ':createAction');
+        $this->get('/create-test/', \LenPRO\Controllers\CollageController::class . ':testAction');
     }
 );

@@ -29,4 +29,25 @@ class CollageController extends BaseController {
             ->write($imageResponse->response('jpg'));
         return $newResponse;
     }
+
+    public function testAction(Request $request, Response $response) {
+        $testImages = [
+            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
+            "https://greatartists.ru/contents/uploads/2018/01/4yLQtZ0fVfw.jpg",
+            "https://greatartists.ru/contents/uploads/2018/01/YVGrECii0dA.jpg",
+            "https://greatartists.ru/contents/uploads/2018/01/pAZK5cYYwy4.jpg",
+            "https://greatartists.ru/contents/uploads/2018/01/LkSQon9mHc.jpg",
+            "https://greatartists.ru/contents/uploads/2018/01/RUR-sg9k7rA.jpg",
+            "https://greatartists.ru/contents/uploads/2017/12/WT72kdIdGB4.jpg",
+            "https://greatartists.ru/contents/uploads/2017/12/JGBqhVZf8yc.jpg",
+            "https://greatartists.ru/contents/uploads/2017/12/zixoLours64.jpg",
+            "https://greatartists.ru/contents/uploads/2017/12/TQJGwLHkdBk.jpg"
+        ];
+
+        $imageResponse = $this->collageMaker
+            ->setImages($testImages)
+            ->testCollage();
+
+        return $response;
+    }
 }
