@@ -43,6 +43,22 @@ class CollageController extends BaseController {
             "https://greatartists.ru/contents/uploads/2017/12/zixoLours64.jpg",
             "https://greatartists.ru/contents/uploads/2017/12/TQJGwLHkdBk.jpg"
         ];
+//        $testImages = [
+//            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
+//            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
+//            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
+//            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
+//            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
+//            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
+//            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
+//            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
+//            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
+//            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
+//            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
+//            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
+//            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
+//            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
+//        ];
 
         $imageResponse = $this->collageMaker
             ->setImages($testImages)

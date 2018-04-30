@@ -13,8 +13,10 @@ use LenPRO\Lib\BaseLib;
 class CollageMaker extends BaseLib {
     private $config = [
         'collage' => [
-            'width' => 2500,
+            'width' => 1500,
             'height' => 2100,
+            'minHeight' => 400,
+            'indent' => 10,
         ]
     ];
     private $imageManager;
@@ -29,9 +31,11 @@ class CollageMaker extends BaseLib {
         $this->config = array_merge($this->config, $config);
     }
 
-    public function setCollageSize(int $width, int $height): self {
+    public function setCollageConfig(int $width, int $height, int $minHeight, int $indent): self {
         $this->config['collage']['width'] = $width;
         $this->config['collage']['height'] = $height;
+        $this->config['collage']['minHeight'] = $minHeight;
+        $this->config['collage']['indent'] = $indent;
 
         return $this;
     }
@@ -73,13 +77,18 @@ class CollageMaker extends BaseLib {
 
         $imagesAspectRatio = [];
         $imagesMeta = [];
-        $offsetY = 0;
+        $offsetY = $collageConfig['indent'];
+        $sumWidth = 0;
         foreach ($images as $image) {
             $image = $this->imageManager
-                ->make($image)
-                ->heighten(700);
+                ->make($image);
+            echo 'width before: ' . $image->width();
+
+            $image->heighten($collageConfig['minHeight']);
+            echo 'width after: ' . $image->width();
             $height = $image->height();
             $width = $image->width();
+            $sumWidth += $width;
             $aspectRatio = floor($height / $width * 100);
             $imagesAspectRatio[] = $aspectRatio;
             $imagesMeta[] = [
@@ -88,51 +97,61 @@ class CollageMaker extends BaseLib {
             ];
         }
 
-        $rows = 3;
-        $linearPartitionResult = $this->linear_partition($imagesAspectRatio, $rows);
+        $rows = (int)round($sumWidth / $collageConfig['width']);
+        $linearPartitionResult = $this->linearPartition($imagesAspectRatio, $rows);
 
-        $canvas = $this->imageManager->canvas($collageConfig['width'], $collageConfig['height']);
+        $canvasHeight = $rows * $collageConfig['minHeight'] + ($rows + 1) * $collageConfig['indent'];
+        $canvas = $this->imageManager->canvas($collageConfig['width'], $canvasHeight);
         foreach ($linearPartitionResult as $aspectRatioRows) {
-            $offsetX = 0;
+            $offsetX = $collageConfig['indent'];
             foreach ($aspectRatioRows as $aspectRatioAfterSorting) {
                 $imageKey = array_search($aspectRatioAfterSorting, $imagesAspectRatio);
                 $imageMeta = $imagesMeta[$imageKey];
 
                 $canvas->insert($imageMeta['image'], 'top-left', $offsetX, $offsetY);
-                $offsetX += $imageMeta['image']->width();
+                $offsetX += $imageMeta['image']->width() + $collageConfig['indent'];
                 $offsetYNew = $imageMeta['image']->height();
             }
-            $offsetY += $offsetYNew;
+            $offsetY += $offsetYNew + $collageConfig['indent'];
         }
         $canvas->save('./test-2.jpg');
     }
 
-    protected function linear_partition(array $seq, $k) {
-        if ($k <= 0) {
+    protected function linearPartition(array $sequence, int $parts) {
+        if ($parts <= 0) {
             return [];
         }
 
-        $n = count($seq) - 1;
-        if ($k > $n) {
-            return array_map(function ($x) {
-                return [$x];
-            }, $seq);
+        $sequenceCounter = count($sequence) - 1;
+        if ($parts > $sequenceCounter) {
+            return array_map(function ($element) {
+                return [$element];
+            }, $sequence);
         }
 
-        list($table, $solution) = $this->linear_partition_table($seq, $k);
-        $k = $k - 2;
+        list($table, $solution) = $this->linearPartitionTable($sequence, $parts);
+        $parts = $parts - 2;
         $ans = [];
 
-        while ($k >= 0) {
-            $ans = array_merge([array_slice($seq, $solution[$n - 1][$k] + 1, $n - $solution[$n - 1][$k])], $ans);
-            $n = $solution[$n - 1][$k];
-            $k = $k - 1;
+        while ($parts >= 0) {
+            $ans = array_merge(
+                [
+                    array_slice(
+                        $sequence,
+                        $solution[$sequenceCounter - 1][$parts] + 1,
+                        $sequenceCounter - $solution[$sequenceCounter - 1][$parts]
+                    )
+                ],
+                $ans
+            );
+            $sequenceCounter = $solution[$sequenceCounter - 1][$parts];
+            $parts = $parts - 1;
         }
 
-        return array_merge([array_slice($seq, 0, $n + 1)], $ans);
+        return array_merge([array_slice($sequence, 0, $sequenceCounter + 1)], $ans);
     }
 
-    protected function linear_partition_table($seq, $k) {
+    protected function linearPartitionTable($seq, $k) {
         $n = count($seq);
 
         $table = array_fill(0, $n, array_fill(0, $k, 0));
