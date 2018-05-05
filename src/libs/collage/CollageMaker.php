@@ -114,6 +114,7 @@ class CollageMaker extends BaseLib {
 
             foreach ($aspectRatioRows as $aspectRatioAfterSorting) {
                 $imageKey = array_search($aspectRatioAfterSorting, $imagesAspectRatio);
+                unset($imagesAspectRatio[$imageKey]);
                 $imageMeta = $imagesMeta[$imageKey];
 
                 $calculatedWidth = $imageMeta['width'] / $sumWidthByRow * $averageWidth;

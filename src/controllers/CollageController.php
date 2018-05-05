@@ -33,32 +33,28 @@ class CollageController extends BaseController {
     public function testAction(Request $request, Response $response) {
         $testImages = [
             "https://greatartists.ru/contents/uploads/2018/04/fRLBai2Y07w.jpg",
+            "https://greatartists.ru/contents/uploads/2018/04/fRLBai2Y07w.jpg",
+            "https://greatartists.ru/contents/uploads/2018/04/fRLBai2Y07w.jpg",
+            "https://greatartists.ru/contents/uploads/2018/04/FN5YFRME-jE.jpg",
             "https://greatartists.ru/contents/uploads/2018/04/FN5YFRME-jE.jpg",
             "https://greatartists.ru/contents/uploads/2018/04/AGytJVguK-4.jpg",
             "https://greatartists.ru/contents/uploads/2018/03/osOVyteW62Y.jpg",
             "https://greatartists.ru/contents/uploads/2018/03/aUhoG3kTrzY.jpg",
+            "https://greatartists.ru/contents/uploads/2018/03/aUhoG3kTrzY.jpg",
+            "https://greatartists.ru/contents/uploads/2018/03/aUhoG3kTrzY.jpg",
             "https://greatartists.ru/contents/uploads/2018/03/J5HmT1HlWtU.jpg",
+            "https://greatartists.ru/contents/uploads/2018/03/J5HmT1HlWtU.jpg",
+            "https://greatartists.ru/contents/uploads/2018/03/J5HmT1HlWtU.jpg",
+            "https://greatartists.ru/contents/uploads/2018/03/xeEp7ZTB_eI.jpg",
             "https://greatartists.ru/contents/uploads/2018/03/xeEp7ZTB_eI.jpg",
             "https://greatartists.ru/contents/uploads/2018/03/xUuo8XUDCic.jpg",
             "https://greatartists.ru/contents/uploads/2018/03/7Wd91yWg1_s.jpg",
+            "https://greatartists.ru/contents/uploads/2018/03/7Wd91yWg1_s.jpg",
+            "https://greatartists.ru/contents/uploads/2018/03/7Wd91yWg1_s.jpg",
+            "https://greatartists.ru/contents/uploads/2018/03/7Wd91yWg1_s.jpg",
+            "https://greatartists.ru/contents/uploads/2018/03/RVyCYqN_Co8.jpg",
             "https://greatartists.ru/contents/uploads/2018/03/RVyCYqN_Co8.jpg",
         ];
-//        $testImages = [
-//            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
-//            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
-//            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
-        ////            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
-        ////            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
-        ////            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
-        ////            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
-        ////            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
-        ////            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
-        ////            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
-        ////            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
-        ////            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
-        ////            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
-        ////            "https://greatartists.ru/contents/uploads/2018/01/wOggGWhh5T4.jpg",
-//        ];
 
         $imageResponse = $this->collageMaker
             ->setImages($testImages)
