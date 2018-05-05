@@ -13,7 +13,7 @@ use LenPRO\Lib\BaseLib;
 class CollageMaker extends BaseLib {
     private $config = [
         'collage' => [
-            'width' => 1500,
+            'width' => 800,
             'height' => 2100,
             'minHeight' => 400,
             'indent' => 10,
@@ -82,10 +82,7 @@ class CollageMaker extends BaseLib {
         foreach ($images as $image) {
             $image = $this->imageManager
                 ->make($image);
-            echo 'width before: ' . $image->width();
-
             $image->heighten($collageConfig['minHeight']);
-            echo 'width after: ' . $image->width();
             $height = $image->height();
             $width = $image->width();
             $sumWidth += $width;
@@ -94,26 +91,50 @@ class CollageMaker extends BaseLib {
             $imagesMeta[] = [
                 'aspectRatio' => $aspectRatio,
                 'image' => $image,
+                'width' => $width,
+                'height' => $height,
             ];
         }
 
         $rows = (int)round($sumWidth / $collageConfig['width']);
+        $averageWidth = $sumWidth / $rows;
         $linearPartitionResult = $this->linearPartition($imagesAspectRatio, $rows);
+        $preparedImages = [];
 
-        $canvasHeight = $rows * $collageConfig['minHeight'] + ($rows + 1) * $collageConfig['indent'];
-        $canvas = $this->imageManager->canvas($collageConfig['width'], $canvasHeight);
         foreach ($linearPartitionResult as $aspectRatioRows) {
             $offsetX = $collageConfig['indent'];
+
+            $sumWidthByRow = 0;
             foreach ($aspectRatioRows as $aspectRatioAfterSorting) {
                 $imageKey = array_search($aspectRatioAfterSorting, $imagesAspectRatio);
                 $imageMeta = $imagesMeta[$imageKey];
 
-                $canvas->insert($imageMeta['image'], 'top-left', $offsetX, $offsetY);
+                $sumWidthByRow += $imageMeta['width'];
+            }
+
+            foreach ($aspectRatioRows as $aspectRatioAfterSorting) {
+                $imageKey = array_search($aspectRatioAfterSorting, $imagesAspectRatio);
+                $imageMeta = $imagesMeta[$imageKey];
+
+                $calculatedWidth = $imageMeta['width'] / $sumWidthByRow * $averageWidth;
+                $imageToInsert = $imageMeta['image']->widen((int)$calculatedWidth);
+                $preparedImages[] = [
+                    'image' => $imageToInsert,
+                    'offsetX' => $offsetX,
+                    'offsetY' => $offsetY
+                ];
+
                 $offsetX += $imageMeta['image']->width() + $collageConfig['indent'];
                 $offsetYNew = $imageMeta['image']->height();
             }
             $offsetY += $offsetYNew + $collageConfig['indent'];
         }
+        $canvas = $this->imageManager->canvas($offsetX, $offsetY);
+
+        foreach ($preparedImages as $collageImage) {
+            $canvas->insert($collageImage['image'], 'top-left', $collageImage['offsetX'], $collageImage['offsetY']);
+        }
+
         $canvas->save('./test-2.jpg');
     }
 
