@@ -14,10 +14,10 @@ class CollageMaker extends BaseLib {
     private $config = [
         'collage' => [
             'width' => 800,
-            'height' => 2100,
             'minHeight' => 400,
             'indent' => 10,
-        ]
+        ],
+        'images' => [],
     ];
     private $imageManager;
 
@@ -27,51 +27,24 @@ class CollageMaker extends BaseLib {
         parent::__construct($container);
     }
 
-    private function setup(array $config): void {
-        $this->config = array_merge($this->config, $config);
-    }
+    public function setup(array $config): self {
+        if (!empty($config)) {
+            $collageConfig = $this->config['collage'];
+            $this->config['collage'] = array_merge($collageConfig, $config['collage']);
 
-    public function setCollageConfig(int $width, int $height, int $minHeight, int $indent): self {
-        $this->config['collage']['width'] = $width;
-        $this->config['collage']['height'] = $height;
-        $this->config['collage']['minHeight'] = $minHeight;
-        $this->config['collage']['indent'] = $indent;
+            $imagesConfig = $this->config['images'];
+            $this->config['images'] = array_merge($imagesConfig, $config['images']);
+        }
 
         return $this;
     }
 
     public function setImages(array $images): self {
-//        if (4 != count($images)) {
-//            throw new \Exception("unsupported count of images");
-//        }
-
         $this->config['images'] = $images;
         return $this;
     }
 
     public function makeCollage() {
-        $collageConfig = $this->config['collage'];
-        $images = $this->config['images'];
-
-        $resultImages = [];
-        foreach ($images as $image) {
-            $resultImages[] = $this->imageManager
-                ->make($image)
-                ->fit(400, 400, function ($constraint) {
-//                    $constraint->upsize();
-                });
-        }
-        $canvas = $this->imageManager->canvas($collageConfig['width'], $collageConfig['height']);
-        $canvas->insert($resultImages[0], 'top-left', 20, 20);
-        $canvas->insert($resultImages[1], 'top-left', 440, 20);
-        $canvas->insert($resultImages[2], 'top-left', 20, 440);
-        $canvas->insert($resultImages[3], 'top-left', 440, 440);
-        $canvas->save('./test.jpg');
-
-        return $canvas;
-    }
-
-    public function testCollage() {
         $images = $this->config['images'];
         $collageConfig = $this->config['collage'];
 
@@ -130,13 +103,14 @@ class CollageMaker extends BaseLib {
             }
             $offsetY += $offsetYNew + $collageConfig['indent'];
         }
+
         $canvas = $this->imageManager->canvas($offsetX, $offsetY);
 
         foreach ($preparedImages as $collageImage) {
             $canvas->insert($collageImage['image'], 'top-left', $collageImage['offsetX'], $collageImage['offsetY']);
         }
 
-        $canvas->save('./test-2.jpg');
+        return $canvas;
     }
 
     protected function linearPartition(array $sequence, int $parts) {
@@ -173,35 +147,35 @@ class CollageMaker extends BaseLib {
         return array_merge([array_slice($sequence, 0, $sequenceCounter + 1)], $ans);
     }
 
-    protected function linearPartitionTable($seq, $k) {
-        $n = count($seq);
+    protected function linearPartitionTable(array $sequence, int $parts) {
+        $sequenceCounter = count($sequence);
 
-        $table = array_fill(0, $n, array_fill(0, $k, 0));
-        $solution = array_fill(0, $n - 1, array_fill(0, $k - 1, 0));
+        $table = array_fill(0, $sequenceCounter, array_fill(0, $parts, 0));
+        $solution = array_fill(0, $sequenceCounter - 1, array_fill(0, $parts - 1, 0));
 
-        for ($i = 0; $i < $n; $i++) {
-            $table[$i][0] = $seq[$i] + ($i ? $table[$i - 1][0] : 0);
+        for ($i = 0; $i < $sequenceCounter; $i++) {
+            $table[$i][0] = $sequence[$i] + ($i ? $table[$i - 1][0] : 0);
         }
 
-        for ($j = 0; $j < $k; $j++) {
-            $table[0][$j] = $seq[0];
+        for ($j = 0; $j < $parts; $j++) {
+            $table[0][$j] = $sequence[0];
         }
 
-        for ($i = 1; $i < $n; $i++) {
-            for ($j = 1; $j < $k; $j++) {
-                $current_min = null;
-                $minx = PHP_INT_MAX;
+        for ($i = 1; $i < $sequenceCounter; $i++) {
+            for ($j = 1; $j < $parts; $j++) {
+                $currentMin = null;
+                $minX = PHP_INT_MAX;
 
                 for ($x = 0; $x < $i; $x++) {
                     $cost = max($table[$x][$j - 1], $table[$i][0] - $table[$x][0]);
-                    if ($current_min === null || $cost < $current_min) {
-                        $current_min = $cost;
-                        $minx = $x;
+                    if ($currentMin === null || $cost < $currentMin) {
+                        $currentMin = $cost;
+                        $minX = $x;
                     }
                 }
 
-                $table[$i][$j] = $current_min;
-                $solution[$i - 1][$j - 1] = $minx;
+                $table[$i][$j] = $currentMin;
+                $solution[$i - 1][$j - 1] = $minX;
             }
         }
 
