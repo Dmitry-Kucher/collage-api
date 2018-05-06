@@ -11,11 +11,17 @@ use Interop\Container\ContainerInterface;
 use LenPRO\Lib\BaseLib;
 
 class CollageMaker extends BaseLib {
+    const IMAGE_PATH = './results/';
+
     private $config = [
         'collage' => [
             'width' => 800,
             'minHeight' => 400,
             'indent' => 10,
+        ],
+        'response' => [
+            'type' => CollageResponseTypes::IMAGE,
+            'imageType' => CollageImageTypes::PNG,
         ],
         'images' => [],
     ];
@@ -31,6 +37,9 @@ class CollageMaker extends BaseLib {
         if (!empty($config)) {
             $collageConfig = $this->config['collage'];
             $this->config['collage'] = array_merge($collageConfig, $config['collage']);
+
+            $responseConfig = $this->config['response'];
+            $this->config['response'] = array_merge($responseConfig, $config['response']);
 
             $imagesConfig = $this->config['images'];
             $this->config['images'] = array_merge($imagesConfig, $config['images']);
@@ -109,6 +118,9 @@ class CollageMaker extends BaseLib {
         foreach ($preparedImages as $collageImage) {
             $canvas->insert($collageImage['image'], 'top-left', $collageImage['offsetX'], $collageImage['offsetY']);
         }
+
+        $imageName = self::IMAGE_PATH . time() . '.' . $this->config['response']['imageType'];
+        $canvas->save($imageName);
 
         return $canvas;
     }
