@@ -32,11 +32,11 @@ class CollageController extends BaseController {
         $this->collageMaker->setup($config);
 
         $imageResponse = $this->collageMaker
-            ->makeCollage();
+            ->getCollage();
 
         $newResponse = $response
             ->withHeader('Content-Type', $imageResponse->mime())
-            ->write($imageResponse->response('jpg'));
+            ->write($imageResponse->response());
         return $newResponse;
     }
 }

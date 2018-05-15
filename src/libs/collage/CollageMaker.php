@@ -53,7 +53,7 @@ class CollageMaker extends BaseLib {
         return $this;
     }
 
-    public function makeCollage() {
+    public function getCanvasAndSaveCollage() {
         $images = $this->config['images'];
         $collageConfig = $this->config['collage'];
 
@@ -121,6 +121,23 @@ class CollageMaker extends BaseLib {
 
         $imageName = self::IMAGE_PATH . time() . '.' . $this->config['response']['imageType'];
         $canvas->save($imageName);
+
+        return $canvas;
+    }
+
+    public function getCollage() {
+        $responseType = $this->config['response']['type'];
+        $canvas = $this->getCanvasAndSaveCollage();
+
+        if ($responseType === CollageResponseTypes::IMAGE) {
+            return $canvas;
+        } elseif ($responseType === CollageResponseTypes::LINK) {
+            //TODO:
+            //Add image link logic here
+        } else {
+            throw new \Exception('Wrong Response type format');
+        }
+
 
         return $canvas;
     }
