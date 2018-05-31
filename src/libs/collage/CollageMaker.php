@@ -11,7 +11,7 @@ use Interop\Container\ContainerInterface;
 use LenPRO\Lib\BaseLib;
 
 class CollageMaker extends BaseLib {
-    const IMAGE_PATH = './results/';
+    const IMAGE_PATH = 'results/';
 
     private $config = [
         'collage' => [
@@ -125,6 +125,10 @@ class CollageMaker extends BaseLib {
         return $canvas;
     }
 
+    public function getConfig() {
+        return $this->config;
+    }
+
     public function getCollage() {
         $responseType = $this->config['response']['type'];
         $canvas = $this->getCanvasAndSaveCollage();
@@ -132,7 +136,9 @@ class CollageMaker extends BaseLib {
         if ($responseType === CollageResponseTypes::IMAGE) {
             return $canvas;
         } elseif ($responseType === CollageResponseTypes::LINK) {
-            //TODO:
+            $link = '/' . $canvas->basePath();
+            return $link;
+        //TODO:
             //Add image link logic here
         } else {
             throw new \Exception('Wrong Response type format');

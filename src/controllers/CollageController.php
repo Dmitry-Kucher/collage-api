@@ -7,6 +7,7 @@
 namespace LenPRO\Controllers;
 
 use Interop\Container\ContainerInterface;
+use LenPRO\Lib\Collage\CollageResponseTypes;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
@@ -34,9 +35,19 @@ class CollageController extends BaseController {
         $imageResponse = $this->collageMaker
             ->getCollage();
 
-        $newResponse = $response
-            ->withHeader('Content-Type', $imageResponse->mime())
-            ->write($imageResponse->response());
+        $collageMakerConfig = $this->collageMaker->getConfig();
+        if ($collageMakerConfig['response']['type'] === CollageResponseTypes::IMAGE) {
+            $newResponse = $response
+                ->withHeader('Content-Type', $imageResponse->mime())
+                ->write($imageResponse->response());
+        } else {
+            $data = [
+                'image' => $imageResponse,
+            ];
+            $newResponse = $response
+                ->withJson($data);
+        }
+
         return $newResponse;
     }
 }
